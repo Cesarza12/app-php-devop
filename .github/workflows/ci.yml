@@ -2,19 +2,24 @@ name: CI PHP Básico
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Descargar código
-        uses: actions/checkout@v3
+      - name: Clonar repositorio
+        uses: actions/checkout@v4
 
-      - name: Verificar versión de PHP
-        run: php -v
+      - name: Configurar PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
 
-      - name: Mensaje DevOps
-        run: echo "Pipeline CI ejecutado correctamente"
+      - name: Validar sintaxis PHP
+        run: |
+          find . -name "*.php" -print0 | xargs -0 -n1 php -l
+
+      - name: Simular despliegue
+        run: echo "Despliegue simulado exitoso"
