@@ -1,2 +1,2 @@
 <?php
-echo "prueba1";
+echo "Error"
