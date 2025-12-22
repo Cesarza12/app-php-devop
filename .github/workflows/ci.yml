@@ -1,11 +1,11 @@
-name: CI PHP Básico
+name: CI/CD PHP Básico
 
 on:
   push:
     branches: [ "main" ]
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,5 +21,13 @@ jobs:
         run: |
           find . -name "*.php" -print0 | xargs -0 -n1 php -l
 
-      - name: Simular despliegue
-        run: echo "Despliegue simulado exitoso"
+      - name: Preparar entorno de producción
+        run: |
+          mkdir -p /tmp/produccion
+          cp -r . /tmp/produccion
+          ls -la /tmp/produccion
+
+      - name: Despliegue simulado
+        run: |
+          echo "🚀 Aplicación desplegada correctamente"
+          echo "Ruta de producción: /tmp/produccion"
