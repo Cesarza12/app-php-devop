@@ -1,0 +1,32 @@
+name: Deploy a Termux
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Configurar SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -p 8022 10.253.136.36 >> ~/.ssh/known_hosts
+
+      - name: Deploy en Termux
+        uses: appleboy/ssh-action@v1
+        with:
+          host: 10.253.136.36
+          port: 8022
+          username: u0_a259          # tu usuario Termux
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd ~/deploy/app-php
+            git pull
